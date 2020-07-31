@@ -6,7 +6,6 @@ import com.baulsupp.okurl.util.ClientException
 import kotlinx.coroutines.runBlocking
 import okhttp3.Protocol
 import okhttp3.internal.platform.Platform
-import org.conscrypt.Conscrypt
 import org.jetbrains.kotlin.script.jsr223.KotlinJsr223JvmLocalScriptEngineFactory
 import picocli.CommandLine
 import java.io.File
@@ -25,7 +24,8 @@ class Main : CommandLineClient() {
   }
 
   override fun runCommand(runArguments: List<String>): Int {
-    val engine = KotlinJsr223JvmLocalScriptEngineFactory().scriptEngine
+    val kotlinJsr223JvmLocalScriptEngineFactory = KotlinJsr223JvmLocalScriptEngineFactory()
+    val engine = kotlinJsr223JvmLocalScriptEngineFactory.scriptEngine
 
     if (runArguments.isEmpty()) {
       System.err.println("usage: okscript file.kts arguments")
@@ -53,7 +53,7 @@ class Main : CommandLineClient() {
     val badprefix = "${exceptionClass.qualifiedName}: "
     if (message != null && message.startsWith(badprefix)) {
       // TODO better handling
-      throw usage(message.lines().first().substring(badprefix.length))
+      throw UsageException(message.lines().first().substring(badprefix.length))
     }
   }
 

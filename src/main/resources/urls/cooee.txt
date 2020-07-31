@@ -1,4 +1,0 @@
-https://api.coo.ee/api/v0/argument-completion
-https://api.coo.ee/api/v0/command-completion
-https://api.coo.ee/api/v0/goinfo
-https://api.coo.ee/api/v0/user

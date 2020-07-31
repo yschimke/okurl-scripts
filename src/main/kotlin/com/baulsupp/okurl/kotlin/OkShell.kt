@@ -54,7 +54,7 @@ inline fun <reified T> query(request: Request): T {
 }
 
 val moshi = Moshi.Builder()
-  .add(MapboxLatLongAdapter())
+  .add(Location::class.java, MapboxLatLongAdapter().nullSafe())
   .add(KotlinJsonAdapterFactory())
   .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
   .add(Instant::class.java, Rfc3339InstantJsonAdapter.nullSafe())
