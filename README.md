@@ -1,2 +1,2 @@
-# oksocial
-OkHttp Social Client
+# OkHttp scripts
+

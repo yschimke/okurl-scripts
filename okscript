@@ -1,0 +1,3 @@
+#!/bin/sh
+
+kotlinc -jvm-target 1.8 -cp lib/kotlin-main-kts.jar -script "$@"
