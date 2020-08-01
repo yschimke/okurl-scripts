@@ -2,7 +2,6 @@ rootProject.name = "okscript"
 
 pluginManagement {
   repositories {
-    mavenLocal()
     jcenter()
     mavenCentral()
     gradlePluginPortal()

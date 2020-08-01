@@ -111,6 +111,19 @@ spotless {
   }
 }
 
+publishing {
+  repositories {
+    maven(url = "build/repository")
+  }
+
+  publications {
+    create("mavenJava", MavenPublication::class) {
+      from(components["java"])
+      artifact(sourcesJar)
+    }
+  }
+}
+
 distributions {
   getByName("main") {
     contents {
