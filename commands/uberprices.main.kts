@@ -1,5 +1,13 @@
 #!/usr/bin/env kotlin
 
+@file:Repository("https://jitpack.io")
+@file:DependsOn("com.github.yschimke:okscript:0.12")
+
+import com.baulsupp.okscript.client
+import com.baulsupp.okscript.location
+import com.baulsupp.okscript.runScript
+import com.baulsupp.okscript.show
+import com.baulsupp.okscript.warmup
 import com.baulsupp.okurl.kotlin.*
 import com.baulsupp.oksocial.output.UsageException
 import com.baulsupp.okurl.services.mapbox.model.MapboxDrivingResults
@@ -8,20 +16,19 @@ import com.baulsupp.okurl.services.mapbox.staticMap
 import com.baulsupp.okurl.services.uber.model.UberPriceEstimates
 import com.baulsupp.okurl.services.uber.model.UberTimeEstimates
 import com.baulsupp.okurl.util.ClientException
-import kotlinx.coroutines.runBlocking
 import kotlin.system.exitProcess
 
 if (args.isEmpty())
   throw UsageException("usage: uberprices Destination")
 
-runBlocking {
-  warmup("https://api.mapbox.com/robots.txt", "https://api.uber.com/robots.txt")
+runScript {
+  client.warmup("https://api.mapbox.com/robots.txt", "https://api.uber.com/robots.txt")
 
   val loc = location()
 
   if (loc == null) {
     System.err.println("no current location")
-    return@runBlocking
+    return@runScript
   }
 
   val possibleDestinations = client.query<MapboxPlacesResult>("https://api.mapbox.com/geocoding/v5/mapbox.places/${args.joinToString("+")}.json?proximity=${loc.longitude},${loc.latitude}")
@@ -49,12 +56,12 @@ runBlocking {
     pinLocation(dest)
   })
 
-  val prices = client.query<UberPriceEstimates>("https://api.uber.com/v1.2/estimates/price?start_latitude=${loc.latitude}&start_longitude=${loc.longitude}&end_latitude=${dest.latitude}&end_longitude=${dest.longitude}").prices
-  val times = client.query<UberTimeEstimates>("https://api.uber.com/v1.2/estimates/time?start_latitude=${loc.latitude}&start_longitude=${loc.longitude}&end_latitude=${dest.latitude}&end_longitude=${dest.longitude}").times
-
-  for (price in prices) {
-    val time = times.find { it.productId == price.productId }
-    val timeEstimate = time?.estimate?.let { "${it / 60} min" } ?: "Unknown"
-    println(price.localizedDisplayName.padEnd(15) + "\t" + timeEstimate.padEnd(15) + "\t" + price.estimate)
-  }
+//  val prices = client.query<UberPriceEstimates>("https://api.uber.com/v1.2/estimates/price?start_latitude=${loc.latitude}&start_longitude=${loc.longitude}&end_latitude=${dest.latitude}&end_longitude=${dest.longitude}").prices
+//  val times = client.query<UberTimeEstimates>("https://api.uber.com/v1.2/estimates/time?start_latitude=${loc.latitude}&start_longitude=${loc.longitude}&end_latitude=${dest.latitude}&end_longitude=${dest.longitude}").times
+//
+//  for (price in prices) {
+//    val time = times.find { it.productId == price.productId }
+//    val timeEstimate = time?.estimate?.let { "${it / 60} min" } ?: "Unknown"
+//    println(price.localizedDisplayName.padEnd(15) + "\t" + timeEstimate.padEnd(15) + "\t" + price.estimate)
+//  }
 }

@@ -1,4 +1,4 @@
-rootProject.name = "okscript"
+rootProject.name = "okscripts"
 
 pluginManagement {
   repositories {

@@ -1,9 +1,12 @@
 #!/usr/bin/env kotlin
 
-import com.baulsupp.okurl.kotlin.client
-import com.baulsupp.okurl.kotlin.queryList
+@file:Repository("https://jitpack.io")
+@file:DependsOn("com.github.yschimke:okscript:0.12")
+
+import com.baulsupp.okscript.client
+import com.baulsupp.okscript.queryList
+import com.baulsupp.okscript.runScript
 import com.squareup.moshi.Json
-import kotlinx.coroutines.runBlocking
 
 data class StatusItem(
   val modeName: String,
@@ -20,7 +23,7 @@ data class StatusItem(
     return "%s".format(this.lineStatuses?.sortedBy { it.statusSeverity }?.firstOrNull()?.statusSeverityDescription)
   }
 
-  fun severity(): Int = lineStatuses?.map { it.statusSeverity }?.minOrNull() ?: 10
+  fun severity(): Int = lineStatuses?.map { it.statusSeverity }?.min() ?: 10
 }
 
 data class LineStatusesItem(
@@ -35,12 +38,10 @@ data class Crowding(@Json(name = "\$type") val type: String)
 
 data class ServiceTypesItem(val name: String, val uri: String, @Json(name = "\$type") val type: String?)
 
-suspend fun queryStatus() = client.queryList<StatusItem>(
-  "https://api.tfl.gov.uk/line/mode/tube/status"
-)
-
-runBlocking {
-  val results = queryStatus()
+runScript {
+  val results = client.queryList<StatusItem>(
+    "https://api.tfl.gov.uk/line/mode/tube/status"
+  )
 
   results.forEach {
     println(it.statusString())

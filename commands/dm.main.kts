@@ -1,10 +1,14 @@
 #!/usr/bin/env kotlin
 
-import com.baulsupp.okurl.kotlin.*
-import com.baulsupp.okurl.services.twitter.model.SearchResults
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import java.net.URLEncoder
+@file:Repository("https://jitpack.io")
+@file:DependsOn("com.github.yschimke:okscript:0.12")
+
+import com.baulsupp.okscript.client
+import com.baulsupp.okscript.execute
+import com.baulsupp.okscript.postJsonBody
+import com.baulsupp.okscript.query
+import com.baulsupp.okscript.request
+import com.baulsupp.okscript.runScript
 
 var target = args[0]
 var message = args.drop(1)
@@ -21,7 +25,7 @@ data class DmRequest(val event: DmEvent) {
   }
 }
 
-runBlocking {
+runScript {
   val friend = client.query<Friend>(
     "https://api.twitter.com/1.1/users/show.json?screen_name=$target"
   )

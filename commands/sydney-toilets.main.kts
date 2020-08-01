@@ -1,6 +1,12 @@
 #!/usr/bin/env kotlin
 
-import com.baulsupp.okurl.kotlin.*
+@file:Repository("https://jitpack.io")
+@file:DependsOn("com.github.yschimke:okscript:0.12")
+
+import com.baulsupp.okscript.client
+import com.baulsupp.okscript.query
+import com.baulsupp.okscript.runScript
+import com.baulsupp.okscript.show
 import com.baulsupp.okurl.location.Location
 import com.baulsupp.okurl.services.mapbox.staticMap
 
@@ -45,8 +51,12 @@ data class ToiletResultSet(val rows: List<Toilet>)
 
 val postcode = args[0]
 
-val toilets = query<ToiletResultSet>("https://australian-dunnies.now.sh/australian-dunnies/dunnies.jsono?Postcode=$postcode").rows
+runScript {
+  val toilets = client.query<ToiletResultSet>(
+    "https://australian-dunnies.now.sh/australian-dunnies/dunnies.jsono?Postcode=$postcode"
+  ).rows
 
-show(staticMap {
-  pinLocations(toilets.map { it.location }, "s-hospital")
-})
+  show(staticMap {
+    pinLocations(toilets.map { it.location }, "s-hospital")
+  })
+}

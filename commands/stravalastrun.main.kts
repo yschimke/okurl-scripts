@@ -1,17 +1,17 @@
-#!/usr/bin/env kotlin -Xskip-prerelease-check
+#!/usr/bin/env kotlin
 
-@file:DependsOn("com.github.yschimke:okscript:0.1")
+@file:Repository("https://jitpack.io/")
+@file:DependsOn("com.github.yschimke:okscript:0.12")
 
+import com.baulsupp.okscript.client
+import com.baulsupp.okscript.query
+import com.baulsupp.okscript.queryList
+import com.baulsupp.okscript.runScript
+import com.baulsupp.okscript.show
 import com.baulsupp.oksocial.output.UsageException
-import com.baulsupp.okurl.kotlin.client
-import com.baulsupp.okurl.kotlin.query
-import com.baulsupp.okurl.kotlin.queryList
-import com.baulsupp.okurl.kotlin.show
 import com.baulsupp.okurl.services.mapbox.StaticMapBuilder
 import com.baulsupp.okurl.services.mapbox.staticMap
 import com.baulsupp.okurl.services.strava.model.ActivitySummary
-import kotlinx.coroutines.runBlocking
-import kotlin.script.experimental.dependencies.DependsOn
 
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
@@ -41,7 +41,7 @@ suspend fun readLastActivity(): ActivitySummary {
   return lastActivity
 }
 
-runBlocking {
+runScript {
   val lastActivity = readLastActivity()
 
   show(staticMap {

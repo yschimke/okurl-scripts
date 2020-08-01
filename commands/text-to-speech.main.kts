@@ -1,5 +1,8 @@
 #!/usr/bin/env kotlin
 
+@file:Repository("https://jitpack.io")
+@file:DependsOn("com.github.yschimke:okscript:0.12")
+
 // Step 1
 // Install okurl
 // $ brew install yschimke/tap/okurl
@@ -16,13 +19,13 @@
 // Step 4 say stuff
 // $ ./text-to-speech.kts 'Hello, how are you?'
 
+import com.baulsupp.okscript.client
+import com.baulsupp.okscript.postJsonBody
+import com.baulsupp.okscript.query
+import com.baulsupp.okscript.request
+import com.baulsupp.okscript.runScript
+import com.baulsupp.okscript.simpleOutput
 import com.baulsupp.oksocial.output.SimpleResponse
-import com.baulsupp.okurl.kotlin.client
-import com.baulsupp.okurl.kotlin.postJsonBody
-import com.baulsupp.okurl.kotlin.query
-import com.baulsupp.okurl.kotlin.request
-import com.baulsupp.okurl.kotlin.simpleOutput
-import kotlinx.coroutines.runBlocking
 import okio.ByteString.Companion.decodeBase64
 
 enum class SsmlVoiceGender {
@@ -72,15 +75,11 @@ val req = TextToSpeechRequest(
   AudioConfig(AudioEncoding.LINEAR16)
 )
 
-suspend fun run() {
+runScript {
   val speechRequest = request("https://texttospeech.googleapis.com/v1beta1/text:synthesize") {
     postJsonBody(req)
   }
   val response = client.query<TextToSpeechResponse>(speechRequest)
 
   simpleOutput.playAudio(SimpleResponse("audio/wav", response.audio()))
-}
-
-runBlocking {
-  run()
 }

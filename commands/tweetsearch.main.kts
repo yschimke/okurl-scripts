@@ -1,25 +1,26 @@
 #!/usr/bin/env kotlin
 
-import com.baulsupp.okurl.kotlin.client
-import com.baulsupp.okurl.kotlin.execute
-import com.baulsupp.okurl.kotlin.query
-import com.baulsupp.okurl.kotlin.request
-import com.baulsupp.okurl.kotlin.showOutput
+@file:Repository("https://jitpack.io")
+@file:DependsOn("com.github.yschimke:okscript:0.12")
+
+import com.baulsupp.okscript.client
+import com.baulsupp.okscript.execute
+import com.baulsupp.okscript.query
+import com.baulsupp.okscript.request
+import com.baulsupp.okscript.runScript
+import com.baulsupp.okscript.showOutput
 import com.baulsupp.okurl.services.twitter.model.SearchResults
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
 import java.net.URLEncoder
 
 var argumentString = args.joinToString("+") { URLEncoder.encode(it, "UTF-8") }
 
-suspend fun run() {
+runScript {
   val results = client.query<SearchResults>(
     "https://api.twitter.com/1.1/search/tweets.json?tweet_mode=extended&q=${argumentString}"
   )
 
-  val images = coroutineScope {
-    results.statuses.map {
+  val images = results.statuses.map {
       it.id_str to it.entities?.media?.map {
         async {
           client.execute(request("${it.media_url_https}:thumb"))
@@ -27,7 +28,6 @@ suspend fun run() {
       }
     }
       .toMap()
-  }
 
   results.statuses.forEach { tweet ->
     println("%-20s: %s".format(tweet.user.screen_name, tweet.full_text))
@@ -37,8 +37,4 @@ suspend fun run() {
       println()
     }
   }
-}
-
-runBlocking {
-  run()
 }
