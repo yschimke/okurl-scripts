@@ -1,14 +1,15 @@
-#!/usr/bin/env okscript
+#!/usr/bin/env kotlin
 
 import com.baulsupp.okurl.kotlin.*
 import com.baulsupp.okurl.services.stackexchange.model.Questions
 import kotlinx.coroutines.runBlocking
+import kotlin.math.max
 
 var questions = runBlocking {
   client.query<Questions>("https://api.stackexchange.com/2.2/questions/unanswered/my-tags?order=desc&sort=creation&site=stackoverflow")
 }
 
-val titleWidth = Math.max(50, terminalWidth - 80)
+val titleWidth = max(50, (terminalWidth ?: 0) - 80)
 for (q in questions.items) {
   val time = epochSecondsToDate(q.creation_date)
   val url = q.link.replace("(.*)/.*".toRegex(), "$1")

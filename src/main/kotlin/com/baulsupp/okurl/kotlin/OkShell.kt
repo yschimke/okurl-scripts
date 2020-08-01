@@ -1,12 +1,15 @@
 package com.baulsupp.okurl.kotlin
 
 import com.baulsupp.oksocial.output.ConsoleHandler
+import com.baulsupp.oksocial.output.OutputHandler
 import com.baulsupp.oksocial.output.SimpleResponseExtractor
-import com.baulsupp.okurl.commands.ToolSession
 import com.baulsupp.okurl.credentials.DefaultToken
 import com.baulsupp.okurl.credentials.Token
+import com.baulsupp.okurl.location.BestLocation
 import com.baulsupp.okurl.location.Location
+import com.baulsupp.okurl.location.LocationSource
 import com.baulsupp.okurl.moshi.Rfc3339InstantJsonAdapter
+import com.baulsupp.okurl.okhttp.OkHttpResponseExtractor
 import com.baulsupp.okurl.services.mapbox.model.MapboxLatLongAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -14,7 +17,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -24,20 +26,9 @@ import java.time.Instant
 import java.util.Date
 import java.util.Locale
 
-class OkShell(val commandLine: ToolSession) {
-  companion object {
-    var instance: OkShell? = null
-    fun create(): OkShell {
-      val main = Main()
-      main.initialise()
-      return OkShell(commandLine = main)
-    }
-  }
-}
-
-val okshell: OkShell by lazy { OkShell.instance ?: OkShell.create() }
-
-val client: OkHttpClient by lazy { okshell.commandLine.client }
+val client: OkHttpClient by lazy { OkHttpClient() }
+val outputHandler: OutputHandler<Response> by lazy { ConsoleHandler<Response>(OkHttpResponseExtractor()) }
+val locationSource: LocationSource by lazy { BestLocation(outputHandler) }
 
 inline fun <reified T> query(
   url: String,
@@ -61,21 +52,21 @@ val moshi = Moshi.Builder()
   .build()!!
 
 fun warmup(vararg urls: String) {
-  okshell.commandLine.client.warmup(*urls)
+  client.warmup(*urls)
 }
 
-fun location(): Location? = runBlocking { okshell.commandLine.locationSource.read() }
+fun location(): Location? = runBlocking { locationSource.read() }
 
 fun show(url: String) {
   runBlocking {
     val response = client.execute(request(url))
 
-    okshell.commandLine.outputHandler.showOutput(response)
+    outputHandler.showOutput(response)
   }
 }
 
 suspend fun showOutput(response: Response) {
-  okshell.commandLine.outputHandler.showOutput(response)
+  outputHandler.showOutput(response)
 }
 
 fun newWebSocket(url: String, listener: WebSocketListener): WebSocket = client.newWebSocket(
@@ -86,7 +77,7 @@ var dateOnlyformat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
 
 fun epochSecondsToDate(seconds: Long) = dateOnlyformat.format(Date(seconds * 1000))!!
 
-val terminalWidth: Int by lazy { runBlocking { (okshell.commandLine.outputHandler as ConsoleHandler).terminalWidth() } }
+val terminalWidth: Int? by lazy { runBlocking { (outputHandler as? ConsoleHandler<Response>)?.terminalWidth() } }
 
 fun jsonPostRequest(url: String, body: String): Request =
   requestBuilder(url, DefaultToken).post(

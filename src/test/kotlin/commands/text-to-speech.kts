@@ -1,4 +1,4 @@
-#!/usr/bin/env okscript
+#!/usr/bin/env kotlin
 
 // Step 1
 // Install okurl
@@ -16,8 +16,12 @@
 // Step 4 say stuff
 // $ ./text-to-speech.kts 'Hello, how are you?'
 
-import com.baulsupp.okurl.kotlin.*
 import com.baulsupp.oksocial.output.SimpleResponse
+import com.baulsupp.okurl.kotlin.client
+import com.baulsupp.okurl.kotlin.postJsonBody
+import com.baulsupp.okurl.kotlin.query
+import com.baulsupp.okurl.kotlin.request
+import com.baulsupp.okurl.kotlin.simpleOutput
 import kotlinx.coroutines.runBlocking
 import okio.ByteString.Companion.decodeBase64
 
@@ -68,11 +72,15 @@ val req = TextToSpeechRequest(
   AudioConfig(AudioEncoding.LINEAR16)
 )
 
-runBlocking {
+suspend fun run() {
   val speechRequest = request("https://texttospeech.googleapis.com/v1beta1/text:synthesize") {
     postJsonBody(req)
   }
   val response = client.query<TextToSpeechResponse>(speechRequest)
 
   simpleOutput.playAudio(SimpleResponse("audio/wav", response.audio()))
+}
+
+runBlocking {
+  run()
 }

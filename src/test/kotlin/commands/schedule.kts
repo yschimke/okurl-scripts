@@ -2,7 +2,6 @@
 
 import com.baulsupp.okurl.kotlin.*
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.kotlin.utils.keysToMap
 import java.io.File
 import java.time.DayOfWeek.*
 import java.time.*
@@ -38,7 +37,7 @@ suspend fun busy(emails: List<String>, start_day: LocalDate, start_time: OffsetT
 fun slots(start_day: LocalDate, start_time: OffsetTime, end_time: OffsetTime, days: Long = 1, length: Long = 30, daysOfWeek: Set<DayOfWeek> = setOf(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)): List<MeetingTime> {
   val times = generateSequence(start_time) { if (it.plusMinutes(length) < end_time) it.plusMinutes(length) else null }.toList()
 
-  return (0 until days).map { start_day.plusDays(it) }.filter { daysOfWeek.contains(it.dayOfWeek) }.flatMap { date -> times.map { time -> date.atTime(time) } }.map { MeetingTime(it, it.plusMinutes(length)) }
+  return (0 until days).map { start_day.plusDays(it) }.filter { daysOfWeek.contains(it.dayOfWeek) }.flatMapMeToo { date -> times.map { time -> date.atTime(time) } }.map { MeetingTime(it, it.plusMinutes(length)) }
 }
 
 fun free_slots(slots: List<MeetingTime>, busy_slots: List<MeetingTime>): List<MeetingTime> {
@@ -46,15 +45,17 @@ fun free_slots(slots: List<MeetingTime>, busy_slots: List<MeetingTime>): List<Me
   return slots.filter { free -> busy_slots.find { busy -> free.overlaps(busy) } == null }
 }
 
-runBlocking {
+suspend fun run() {
   val emails = File(args[0]).readLines()
 //  val principal = emails.first()
   val people = emails.drop(1)
 
   val pacific = ZoneOffset.ofHours(-7)
   val start_day = LocalDate.now()
-  val start_time = LocalTime.of(9, 0).atOffset(pacific)
-  val end_time = LocalTime.of(14, 0).atOffset(pacific)
+  val start_time = LocalTime.of(9, 0)
+    .atOffset(pacific)
+  val end_time = LocalTime.of(14, 0)
+    .atOffset(pacific)
   val days = 30L
   val length = 30L
 
@@ -63,8 +64,12 @@ runBlocking {
   val all_slots = slots(start_day, start_time, end_time, days, length)
 
 //  val principle_slots = free_slots(all_slots, busy_times.getValue(principal))
-  val people_slots = people.keysToMap { free_slots(all_slots, busy_times.getValue(it)) }
+//  val people_slots = people.keysToMap { free_slots(all_slots, busy_times.getValue(it)) }
+//
+//  // TODO schedule best meeting times
+//  println(people_slots)
+}
 
-  // TODO schedule best meeting times
-  println(people_slots)
+runBlocking {
+  run()
 }

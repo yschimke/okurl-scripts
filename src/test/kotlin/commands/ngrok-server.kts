@@ -1,4 +1,4 @@
-#!/usr/bin/env okscript
+#!/usr/bin/env kotlin
 
 import com.baulsupp.oksocial.output.ConsoleHandler
 import com.baulsupp.oksocial.output.ResponseExtractor

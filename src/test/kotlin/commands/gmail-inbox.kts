@@ -1,4 +1,4 @@
-#!/usr/bin/env okscript
+#!/usr/bin/env kotlin
 
 import com.baulsupp.okurl.kotlin.*
 

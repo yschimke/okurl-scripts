@@ -1,4 +1,4 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -11,19 +11,18 @@ plugins {
 }
 
 repositories {
-  mavenLocal()
   jcenter()
   mavenCentral()
-  maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
+//  maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
   maven(url = "https://jitpack.io")
-  maven(url = "https://repo.maven.apache.org/maven2")
-  maven(url = "https://dl.bintray.com/kotlin/kotlin-eap/")
-  maven(url = "https://dl.bintray.com/kotlin/kotlin-dev/")
-  maven(url = "https://repo.spring.io/milestone/")
-  maven(url = "https://dl.bintray.com/reactivesocket/RSocket/")
-  maven(url = "https://oss.sonatype.org/content/repositories/releases/")
-  maven(url = "https://dl.bintray.com/yschimke/baulsupp.com/")
-  maven(url = "https://packages.atlassian.com/maven-public")
+//  maven(url = "https://repo.maven.apache.org/maven2")
+//  maven(url = "https://dl.bintray.com/kotlin/kotlin-eap/")
+//  maven(url = "https://dl.bintray.com/kotlin/kotlin-dev/")
+//  maven(url = "https://repo.spring.io/milestone/")
+//  maven(url = "https://dl.bintray.com/reactivesocket/RSocket/")
+//  maven(url = "https://oss.sonatype.org/content/repositories/releases/")
+//  maven(url = "https://dl.bintray.com/yschimke/baulsupp.com/")
+//  maven(url = "https://packages.atlassian.com/maven-public")
 }
 
 group = "com.github.yschimke"
@@ -42,8 +41,8 @@ java {
 tasks {
   withType(KotlinCompile::class) {
     kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.apiVersion = "1.3"
-    kotlinOptions.languageVersion = "1.3"
+    kotlinOptions.apiVersion = "1.4"
+    kotlinOptions.languageVersion = "1.4"
 
     kotlinOptions.allWarningsAsErrors = false
     kotlinOptions.freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
@@ -58,7 +57,7 @@ tasks {
 
 dependencies {
   implementation("com.github.yschimke:oksocial-output:5.1")
-  implementation("com.github.yschimke:okurl:2.11")
+  implementation("com.github.yschimke:okurl:2.12")
   implementation("com.squareup.okhttp3:logging-interceptor:4.8.0")
   implementation("com.squareup.okhttp3:okhttp:4.8.0")
   implementation("com.squareup.okhttp3:okhttp-brotli:4.8.0")
@@ -68,13 +67,12 @@ dependencies {
   implementation("com.squareup.moshi:moshi:1.9.3")
   implementation("com.squareup.moshi:moshi-adapters:1.9.3")
   implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
-  implementation("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:1.3.72")
-  implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.3.72")
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.72")
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.3.6")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.6")
+  implementation("org.jetbrains.kotlin:kotlin-scripting-dependencies:1.4.0-rc")
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0-rc")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.0-rc")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8-1.4.0-rc")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.3.8-1.4.0-rc")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.8-1.4.0-rc")
   implementation("org.slf4j:slf4j-api:2.0.0-alpha0")
   implementation("org.slf4j:slf4j-jdk14:2.0.0-alpha0")
   implementation("org.zeroturnaround:zt-exec:1.11")
@@ -82,12 +80,12 @@ dependencies {
   implementation("org.jfree:jfreesvg:3.4")
   implementation("info.picocli:picocli:4.4.0")
 
-  implementation("org.jetbrains.kotlin:kotlin-script-util:1.3.70") {
+  implementation("org.jetbrains.kotlin:kotlin-script-util:1.4.0-rc") {
     exclude(module = "kotlin-compiler")
   }
 
-  testImplementation("org.jetbrains.kotlin:kotlin-test:1.3.70")
-  testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.70")
+  testImplementation("org.jetbrains.kotlin:kotlin-test:1.4.0-rc")
+  testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.4.0-rc")
   testImplementation("com.squareup.okhttp3:mockwebserver:4.7.0")
 
   testRuntime("org.slf4j:slf4j-jdk14:2.0.0-alpha0")
@@ -123,29 +121,20 @@ distributions {
         fileMode = Integer.parseUnsignedInt("755", 8)
         into("bin")
       }
-      from("${rootProject.projectDir}/certificates") {
-        into("certificates")
-      }
       from("${rootProject.projectDir}/src/test/kotlin/commands") {
         fileMode = Integer.parseUnsignedInt("755", 8)
         exclude("local")
         into("bin")
       }
-      from("${rootProject.projectDir}/bash") {
-        into("bash")
-      }
-      from("${rootProject.projectDir}/zsh") {
-        into("zsh")
-      }
-      from("${rootProject.projectDir}/src/main/resources") {
-        into("scripts")
-      }
-      into("lib") {
-        from(jar)
-      }
-      into("lib") {
-        from(configurations.runtimeClasspath)
-      }
+//      from("${rootProject.projectDir}/src/main/resources") {
+//        into("scripts")
+//      }
+//      into("lib") {
+//        from(jar)
+//      }
+//      into("lib") {
+//        from(configurations.runtimeClasspath)
+//      }
     }
   }
 }

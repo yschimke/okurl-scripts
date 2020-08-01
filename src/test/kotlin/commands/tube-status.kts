@@ -1,9 +1,9 @@
-#!/usr/bin/env okscript
+#!/usr/bin/env kotlin
 
-import com.baulsupp.okurl.kotlin.*
+import com.baulsupp.okurl.kotlin.client
+import com.baulsupp.okurl.kotlin.queryList
 import com.squareup.moshi.Json
 import kotlinx.coroutines.runBlocking
-import org.fusesource.jansi.Ansi
 
 data class StatusItem(
   val modeName: String,
@@ -17,16 +17,10 @@ data class StatusItem(
   @Json(name = "\$type") val type: String
 ) {
   fun statusString(): String {
-    return "%30s\t%s".format(this.name.color(statusColor()), this.lineStatuses?.sortedBy { it.statusSeverity }?.firstOrNull()?.statusSeverityDescription)
+    return "%s".format(this.lineStatuses?.sortedBy { it.statusSeverity }?.firstOrNull()?.statusSeverityDescription)
   }
 
-  fun severity(): Int = lineStatuses?.map { it.statusSeverity }?.min() ?: 10
-
-  fun statusColor() = when (severity()) {
-    10 -> Ansi.Color.WHITE
-    in 5..9 -> Ansi.Color.MAGENTA
-    else -> Ansi.Color.RED
-  }
+  fun severity(): Int = lineStatuses?.map { it.statusSeverity }?.minOrNull() ?: 10
 }
 
 data class LineStatusesItem(
@@ -41,9 +35,12 @@ data class Crowding(@Json(name = "\$type") val type: String)
 
 data class ServiceTypesItem(val name: String, val uri: String, @Json(name = "\$type") val type: String?)
 
+suspend fun queryStatus() = client.queryList<StatusItem>(
+  "https://api.tfl.gov.uk/line/mode/tube/status"
+)
+
 runBlocking {
-  val results = client.queryList<StatusItem>(
-    "https://api.tfl.gov.uk/line/mode/tube/status")
+  val results = queryStatus()
 
   results.forEach {
     println(it.statusString())
