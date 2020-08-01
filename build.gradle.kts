@@ -56,18 +56,17 @@ tasks {
 }
 
 dependencies {
-  implementation("com.github.yschimke:oksocial-output:5.1")
-  implementation("com.github.yschimke:okurl:2.12")
-  implementation("com.squareup.okhttp3:logging-interceptor:4.8.0")
-  implementation("com.squareup.okhttp3:okhttp:4.8.0")
-  implementation("com.squareup.okhttp3:okhttp-brotli:4.8.0")
-  implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:4.8.0")
-  implementation("com.squareup.okhttp3:okhttp-sse:4.8.0")
-  implementation("com.squareup.okhttp3:okhttp-tls:4.8.0")
-  implementation("com.squareup.moshi:moshi:1.9.3")
-  implementation("com.squareup.moshi:moshi-adapters:1.9.3")
-  implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
-  implementation("org.jetbrains.kotlin:kotlin-scripting-dependencies:1.4.0-rc")
+  api("com.github.yschimke:oksocial-output:5.1")
+  api("com.github.yschimke:okurl:2.12")
+  api("com.squareup.okhttp3:logging-interceptor:4.8.0")
+  api("com.squareup.okhttp3:okhttp:4.8.0")
+  api("com.squareup.okhttp3:okhttp-brotli:4.8.0")
+  api("com.squareup.okhttp3:okhttp-dnsoverhttps:4.8.0")
+  api("com.squareup.okhttp3:okhttp-sse:4.8.0")
+  api("com.squareup.okhttp3:okhttp-tls:4.8.0")
+  api("com.squareup.moshi:moshi:1.9.3")
+  api("com.squareup.moshi:moshi-adapters:1.9.3")
+  api("com.squareup.moshi:moshi-kotlin:1.9.3")
   implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0-rc")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.0-rc")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8-1.4.0-rc")
@@ -80,15 +79,8 @@ dependencies {
   implementation("org.jfree:jfreesvg:3.4")
   implementation("info.picocli:picocli:4.4.0")
 
-  implementation("org.jetbrains.kotlin:kotlin-script-util:1.4.0-rc") {
-    exclude(module = "kotlin-compiler")
-  }
-
-  testImplementation("org.jetbrains.kotlin:kotlin-test:1.4.0-rc")
-  testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.4.0-rc")
-  testImplementation("com.squareup.okhttp3:mockwebserver:4.7.0")
-
-  testRuntime("org.slf4j:slf4j-jdk14:2.0.0-alpha0")
+//  implementation("org.jetbrains.kotlin:kotlin-scripting-dependencies:1.4.0-rc")
+  implementation("org.jetbrains.kotlin:kotlin-main-kts:1.4.0-rc")
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
