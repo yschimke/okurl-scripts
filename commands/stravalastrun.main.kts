@@ -1,4 +1,4 @@
-#!/usr/bin/env kotlin
+#!/usr/bin/env okscript
 
 @file:Repository("https://jitpack.io/")
 @file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
@@ -22,6 +22,7 @@ fun printActivity(lastActivity: ActivitySummary) {
   println("Avg Heartrate: ${lastActivity.average_heartrate}")
   println("Avg Speed: ${lastActivity.average_speed}")
   println("Type: ${lastActivity.type}")
+  println("Device: ${lastActivity.device_name}")
 }
 
 suspend fun readLastActivity(): ActivitySummary {

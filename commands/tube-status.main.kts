@@ -1,4 +1,4 @@
-#!/usr/bin/env kotlin
+#!/usr/bin/env okscript
 
 @file:Repository("https://jitpack.io")
 @file:DependsOn("com.github.yschimke:okurl-script:1.0.0")

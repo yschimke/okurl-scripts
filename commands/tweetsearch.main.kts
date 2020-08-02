@@ -1,4 +1,4 @@
-#!/usr/bin/env kotlin
+#!/usr/bin/env okscript
 
 @file:Repository("https://jitpack.io")
 @file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
@@ -23,7 +23,7 @@ runScript {
   val images = results.statuses.map {
       it.id_str to it.entities?.media?.map {
         async {
-          client.execute(request("${it.media_url_https}:thumb"))
+          client.execute(request("${it.media_url_https}:medium"))
         }
       }
     }
