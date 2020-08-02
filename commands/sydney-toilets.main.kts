@@ -44,7 +44,7 @@ data class Toilet(
   val Unisex: Int,
   val Url: String?
 ) {
-  val location = Location(Latitude, Longitude)
+  val location = Location(latitude = Latitude, longitude = Longitude)
 }
 
 data class ToiletResultSet(val rows: List<Toilet>)
@@ -53,7 +53,7 @@ val postcode = args[0]
 
 runScript {
   val toilets = client.query<ToiletResultSet>(
-    "https://australian-dunnies.now.sh/australian-dunnies/dunnies.jsono?Postcode=$postcode"
+    "https://australian-dunnies.now.sh/australian-dunnies-92a33eb/dunnies.jsono?Postcode=$postcode"
   ).rows
 
   show(staticMap {
