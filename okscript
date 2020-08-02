@@ -1,3 +1,5 @@
 #!/bin/sh
 
-kotlinc -jvm-target 1.8 -cp lib/kotlin-main-kts.jar -script "$@"
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-12.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
+kotlinc-jvm -nowarn -jvm-target 1.8 -script "$@"

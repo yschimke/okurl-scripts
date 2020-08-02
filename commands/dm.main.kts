@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin
 
 @file:Repository("https://jitpack.io")
-@file:DependsOn("com.github.yschimke:okscript:0.12")
+@file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
 
 import com.baulsupp.okscript.client
 import com.baulsupp.okscript.execute
