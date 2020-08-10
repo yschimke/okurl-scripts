@@ -2,6 +2,7 @@
 
 @file:Repository("https://jitpack.io")
 @file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
+@file:CompilerOptions("-jvm-target", "1.8")
 
 import com.baulsupp.okscript.postJsonBody
 import com.baulsupp.okscript.query

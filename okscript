@@ -2,4 +2,4 @@
 
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-12.jdk/Contents/Home
 export PATH=$JAVA_HOME/bin:$PATH
-kotlinc-jvm -nowarn -jvm-target 1.8 -script "$@"
+kotlinc-jvm -nowarn -script "$@"
