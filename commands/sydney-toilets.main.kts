@@ -1,4 +1,4 @@
-#!/usr/bin/env kotlinc-jvm -nowarn -script
+#!/usr/bin/env -S kotlinc-jvm -nowarn -script
 
 @file:Repository("https://jitpack.io")
 @file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
@@ -61,7 +61,7 @@ runScript {
     println(toilet.Name + " " + (toilet.Address ?: ""))
   }
 
-  show(staticMap {
-    pinLocations(toilets.map { it.location }, "s-hospital")
-  })
+//  show(staticMap {
+//    pinLocations(toilets.map { it.location }, "s-hospital")
+//  })
 }
