@@ -50,12 +50,16 @@ data class Toilet(
 
 data class ToiletResultSet(val rows: List<Toilet>)
 
-val postcode = args[0]
+val postcode = args.getOrElse(0) { "2001" }
 
 runScript {
   val toilets = client.query<ToiletResultSet>(
-    "https://australian-dunnies.now.sh/australian-dunnies-92a33eb/dunnies.jsono?Postcode=$postcode"
+    "https://australian-dunnies.now.sh/australian-dunnies/dunnies.json?_shape=objects&_Postcode=$postcode"
   ).rows
+
+  for (toilet in toilets) {
+    println(toilet.Name + " " + (toilet.Address ?: ""))
+  }
 
   show(staticMap {
     pinLocations(toilets.map { it.location }, "s-hospital")
