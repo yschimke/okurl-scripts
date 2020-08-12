@@ -47,6 +47,16 @@ data class Toilet(
   val Unisex: Int,
   val Url: String?
 ) {
+  val gender: String
+  get() = buildString {
+    if (Male != 0) {
+      append("👨")
+    }
+    if (Female != 0) {
+      append("👩")
+    }
+  }
+
   val location = Location(latitude = Latitude, longitude = Longitude)
 }
 
@@ -70,10 +80,10 @@ runScript {
       paddingRight = 1
     }
     header {
-      row("Name", "Address")
+      row("Name", "Address", "Gender")
     }
     for (toilet in toilets) {
-      row(toilet.Name, toilet.Address)
+      row(toilet.Name, toilet.Address, toilet.gender)
     }
   }
 
