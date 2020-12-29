@@ -1,4 +1,4 @@
-#!/usr/bin/env -S kotlinc-jvm -nowarn -script
+#!/usr/bin/env kotlin
 
 @file:Repository("https://jitpack.io")
 @file:DependsOn("com.github.yschimke:okurl-script:1.0.0")

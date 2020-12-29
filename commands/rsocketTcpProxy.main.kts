@@ -1,4 +1,4 @@
-#!/usr/bin/env -S kotlinc-jvm -nowarn -script
+#!/usr/bin/env kotlin
 
 @file:Repository("https://jcenter.bintray.com")
 @file:DependsOn("io.rsocket.kotlin:rsocket-transport-ktor-client-jvm:0.12.0")

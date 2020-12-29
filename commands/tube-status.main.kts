@@ -1,4 +1,4 @@
-#!/usr/bin/env -S kotlinc-jvm -nowarn -script
+#!/usr/bin/env kotlin
 
 @file:Repository("https://jitpack.io")
 @file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
@@ -24,7 +24,7 @@ data class StatusItem(
     return "%s".format(this.lineStatuses?.sortedBy { it.statusSeverity }?.firstOrNull()?.statusSeverityDescription)
   }
 
-  fun severity(): Int = lineStatuses?.map { it.statusSeverity }?.min() ?: 10
+  fun severity(): Int = lineStatuses?.map { it.statusSeverity }?.minOrNull() ?: 10
 }
 
 data class LineStatusesItem(
