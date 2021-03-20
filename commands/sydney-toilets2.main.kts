@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin
 
 @file:Repository("https://jitpack.io")
-@file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
+@file:DependsOn("com.github.yschimke:okurl-script:2.0.2")
 @file:DependsOn("com.jakewharton.picnic:picnic:0.4.0")
 @file:CompilerOptions("-jvm-target", "1.8")
 

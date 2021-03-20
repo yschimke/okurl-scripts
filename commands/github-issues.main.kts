@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin
 
 @file:Repository("https://jitpack.io")
-@file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
+@file:DependsOn("com.github.yschimke:okurl-script:2.0.2")
 @file:CompilerOptions("-jvm-target", "1.8")
 
 import com.baulsupp.okscript.postJsonBody
@@ -22,13 +22,13 @@ data class Issue(
   val comments: Int,
 )
 
-if (args.size < 2) {
-  usage("github-issues.main.kts org repo")
-}
-
-val (owner, repo) = args
-
 runScript {
+  if (args.size < 2) {
+    usage("github-issues.main.kts org repo")
+  }
+
+  val (owner, repo) = args
+
   val results = client.queryList<Issue>("https://api.github.com/repos/$owner/$repo/issues")
 
   for (issue in results) {

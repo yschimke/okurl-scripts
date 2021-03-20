@@ -7,12 +7,12 @@
 @file:DependsOn("org.diagramsascode:diagramsascode-activity:0.1.1")
 @file:DependsOn("org.diagramsascode:diagramsascode-sequence:0.1.1")
 @file:DependsOn("net.sourceforge.plantuml:plantuml:1.2021.1")
-@file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
+@file:DependsOn("com.github.yschimke:okurl-script:2.0.2")
+@file:DependsOn("com.github.pgreze:kotlin-process:1.2")
 @file:CompilerOptions("-jvm-target", "1.8")
 
-import com.baulsupp.oksocial.output.ConsoleHandler
-import com.baulsupp.oksocial.output.FileResponseExtractor
-import kotlinx.coroutines.runBlocking
+import com.baulsupp.oksocial.output.handler.ConsoleHandler
+import com.baulsupp.oksocial.output.responses.FileResponseExtractor
 import org.diagramsascode.core.Diagram
 import org.diagramsascode.image.SequenceDiagramImage
 import org.diagramsascode.sequence.constraint.SequenceDiagramConstraints
@@ -39,8 +39,4 @@ SequenceDiagramImage.of(diagram).writeToPngFile(outputFile);
 
 println(outputFile)
 
-val output = ConsoleHandler.instance(FileResponseExtractor)
-runBlocking {
-  output.showOutput(outputFile)
-}
-
+ConsoleHandler.previewFile(outputFile)

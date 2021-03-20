@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin
 
 @file:Repository("https://jitpack.io")
-@file:DependsOn("com.github.yschimke:okurl-script:1.0.0")
+@file:DependsOn("com.github.yschimke:okurl-script:2.0.2")
 @file:CompilerOptions("-jvm-target", "1.8")
 
 // Step 1
@@ -26,7 +26,7 @@ import com.baulsupp.okscript.query
 import com.baulsupp.okscript.request
 import com.baulsupp.okscript.runScript
 import com.baulsupp.okscript.simpleOutput
-import com.baulsupp.oksocial.output.SimpleResponse
+import com.baulsupp.oksocial.output.responses.SimpleResponse
 import okio.ByteString.Companion.decodeBase64
 
 enum class SsmlVoiceGender {
