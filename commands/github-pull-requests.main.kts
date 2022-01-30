@@ -1,8 +1,8 @@
 #!/usr/bin/env kotlin
 
 @file:Repository("https://jitpack.io")
-@file:DependsOn("com.github.yschimke:okurl-script:2.0.2")
-@file:CompilerOptions("-jvm-target", "1.8")
+@file:DependsOn("com.github.yschimke:okurl-script:2.1.0")
+@file:CompilerOptions("-jvm-target", "17")
 
 import com.baulsupp.okscript.postJsonBody
 import com.baulsupp.okscript.query

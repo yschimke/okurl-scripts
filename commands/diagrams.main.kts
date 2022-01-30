@@ -6,13 +6,16 @@
 @file:DependsOn("org.diagramsascode:diagramsascode-core:0.1.1")
 @file:DependsOn("org.diagramsascode:diagramsascode-activity:0.1.1")
 @file:DependsOn("org.diagramsascode:diagramsascode-sequence:0.1.1")
-@file:DependsOn("net.sourceforge.plantuml:plantuml:1.2021.1")
-@file:DependsOn("com.github.yschimke:okurl-script:2.0.2")
-@file:DependsOn("com.github.pgreze:kotlin-process:1.2")
-@file:CompilerOptions("-jvm-target", "1.8")
+@file:DependsOn("net.sourceforge.plantuml:plantuml:1.2022.0")
+@file:DependsOn("com.github.yschimke:okurl-script:2.1.0")
+@file:DependsOn("com.github.pgreze:kotlin-process:1.3.1")
+@file:CompilerOptions("-jvm-target", "17")
 
-import com.baulsupp.oksocial.output.handler.ConsoleHandler
-import com.baulsupp.oksocial.output.responses.FileResponseExtractor
+import com.baulsupp.okscript.runScript
+import com.baulsupp.schoutput.handler.ConsoleHandler
+import com.baulsupp.schoutput.outputHandlerInstance
+import com.baulsupp.schoutput.responses.FileResponseExtractor
+import okio.Path.Companion.toOkioPath
 import org.diagramsascode.core.Diagram
 import org.diagramsascode.image.SequenceDiagramImage
 import org.diagramsascode.sequence.constraint.SequenceDiagramConstraints
@@ -35,8 +38,11 @@ val diagram = Diagram.builder()
   .build()
 
 var outputFile = File.createTempFile("sequence", ".png");
-SequenceDiagramImage.of(diagram).writeToPngFile(outputFile);
+SequenceDiagramImage.of(diagram)
+  .writeToPngFile(outputFile);
 
 println(outputFile)
 
-ConsoleHandler.previewFile(outputFile)
+runScript {
+  (outputHandlerInstance(FileResponseExtractor) as ConsoleHandler).openPreview(outputFile.toOkioPath())
+}

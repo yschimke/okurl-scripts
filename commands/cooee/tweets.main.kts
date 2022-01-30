@@ -13,8 +13,8 @@
 @file:DependsOn("com.squareup.wire:wire-runtime:3.4.0")
 @file:DependsOn("com.squareup.wire:wire-moshi-adapter:3.4.0")
 @file:DependsOn("com.github.yschimke:okurl:3.2")
-@file:DependsOn("com.github.yschimke:okurl-script:2.0.2")
-@file:CompilerOptions("-jvm-target", "1.8")
+@file:DependsOn("com.github.yschimke:okurl-script:2.1.0")
+@file:CompilerOptions("-jvm-target", "17")
 
 import com.baulsupp.cooee.p.CommandResponse
 import com.baulsupp.cooee.p.CommandStatus

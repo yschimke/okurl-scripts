@@ -3,7 +3,7 @@
 @file:Repository("https://jcenter.bintray.com")
 @file:DependsOn("io.rsocket.kotlin:rsocket-transport-ktor-client-jvm:0.12.0")
 @file:DependsOn("io.ktor:ktor-client-cio-jvm:1.4.3")
-@file:CompilerOptions("-jvm-target", "1.8")
+@file:CompilerOptions("-jvm-target", "17")
 
 import io.ktor.client.HttpClient
 import io.ktor.network.selector.ActorSelectorManager

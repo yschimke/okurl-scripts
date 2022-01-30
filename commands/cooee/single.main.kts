@@ -12,7 +12,7 @@
 @file:DependsOn("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
 @file:DependsOn("com.squareup.wire:wire-runtime:3.4.0")
 @file:DependsOn("com.squareup.wire:wire-moshi-adapter:3.4.0")
-@file:CompilerOptions("-jvm-target", "1.8")
+@file:CompilerOptions("-jvm-target", "17")
 
 import com.baulsupp.cooee.p.CommandResponse
 import com.baulsupp.cooee.sdk.SimpleServer
